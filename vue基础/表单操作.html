@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单操作</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <span>姓名：</span>
+            <input type="text" v-model="username"/>
+        </div></br>
+
+        <div>
+            <span>性别：</span>
+            <input type="radio" id="male" value="1" v-model="gender">
+            <label for="male">男</label>
+            <input type="radio" id="female" value="2" v-model="gender">
+            <label for="female">女</label>
+        </div></br>
+
+        <div>
+            <span>爱好:</span>
+            <input type="checkbox" id="ball" value="1" v-model="hobby">
+            <label for="ball">篮球</label>
+            <input type="checkbox" id="sing" value="2" v-model="hobby">
+            <label for="sing">唱歌</label>
+            <input type="checkbox" id="code" value="3" v-model="hobby">
+            <label for="code">写代码</label>
+        </div></br>
+
+        <div>
+            <span>职业:</span>
+            <select v-model="occupation" multiple="true">
+                <option value="1">请选择职业...</option>
+                <option value="2">教师</option>
+                <option value="3">软件工程师</option>
+                <option value="4">律师</option>
+            </select>
+        </div></br>
+
+        <div>
+            <span>个人简介：</span>
+            <textarea v-model="describe"></textarea>
+        </div></br>
+
+        <div>
+            <input type="submit" value="提交" @click.prevent="handle">
+        </div>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                username:'zhangsan',
+                gender:2,
+                hobby:['1','2'],
+                occupation:['2','4'],
+                describe:'你好'
+
+            },
+            methods: {
+                handle(){
+                    console.log(this.gender,this.hobby.toString())
+                }
+            },
+        })
+    </script>
+</body>
+</html>

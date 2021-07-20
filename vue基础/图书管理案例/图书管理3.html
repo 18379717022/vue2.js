@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改响应式数据</title>
+   
+</head>
+<body>
+    <div id="app">
+        <div>
+            <ul>
+                <li v-for="(item,index) in list" :key="index">{{item}}</li>
+            </ul>
+            <div>
+                {{info.name}}
+            </div>
+            <div>
+                {{info.age}}
+            </div>
+            <div>
+                {{info.gender}}
+            </div>
+            <div>
+                {{info.hobby}}
+            </div>
+        </div>
+    </div>
+
+    <script src="../vue.js"></script>
+    <script>
+        var vm=new Vue({
+            el:'#app',
+            data:{
+                list:['apple','orange','banana'],
+                info:{
+                    name:'zhangsan',
+                    age:14,
+                }
+            },
+        });
+        Vue.set(vm.list,2,'lemon')
+        vm.info.hobby='basketball'
+        vm.$set(vm.info,'gender','female')
+    </script>
+</body>
+</html>

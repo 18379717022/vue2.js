@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        .tab ul{
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+        .tab ul li{
+            box-sizing: border-box;
+            padding: 0;
+            float: left;
+            width: 100px;
+            height: 45px;
+            line-height: 45px;
+            list-style: none;
+            text-align: center;
+            border-top: 1px solid blue;
+            border-right: 1px solid blue;
+            cursor:pointer;
+        }
+        .tab ul li:first-child{
+            border-left: 1px solid blue;
+        }
+        .tab ul li.active{
+            background-color: orange;
+        }
+        .tab div{
+            width: 605px;
+            height: 434px;
+            text-align: center;
+            border: 1px solid blue;
+            border-top: 0px;
+        }
+         .current{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="tab">
+            <ul v-cloak>
+                <li @click="change(index)" :class='currentIndex==index?"active" :""' 
+                :key="item.id" v-for="(item,index) in list">{{item.name}}</li>
+            </ul>
+            <div style="height: 385px;" :class="currentIndex!=index?'current':''" v-for="(item,index) in list" :key="item.id">
+            <img :src="item.path">
+            </div>
+        </div>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                currentIndex:0,
+                list:[{
+                    id:1,
+                    name:'盖聂',
+                    path:'img/1.png'
+                },{
+                    id:2,
+                    name:'张良',
+                    path:'img/2.png'
+                },{
+                    id:3,
+                    name:'红莲卫庄',
+                    path:'img/4.png'
+                }]
+            },
+            methods: {
+                change(index){
+                    this.currentIndex=index
+                }
+            },
+        })
+    </script>
+</body>
+</html>

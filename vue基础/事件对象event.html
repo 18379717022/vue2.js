@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件对象event</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <button @click="handle1">点击一</button>
+            <button @click="handle2(124,567,$event)">点击二</button>
+        </div>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+
+            },
+            methods: {
+                handle1(){
+                    console.log(event.target.innerHTML)
+                },
+                handle2(p,m,e){
+                    console.log(p,m)
+                    console.log(e.target.tagName)
+
+                }
+            },
+        })
+
+    </script>
+</body>
+</html>

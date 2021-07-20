@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1{
+            text-align: center;
+        }
+        .inputitem{
+            width: 500px;
+            height: 40px;
+            background-color: gray;
+            line-height: 40px;
+            text-align: center;
+            margin: auto;
+        }
+        .totalitem{
+            background-color: orange;
+            width: 500px;
+            height: 40px;
+            text-align: center;
+            margin: auto;
+            line-height: 40px;
+        }
+        .table-container{
+            width: 500px;
+            height: 200px;
+            margin: auto;
+        }
+        .table-container thead{
+            background-color: orange;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+        .table-container table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-container th,td{
+            border: 1px dashed orange;
+        }
+        .table-container tbody{
+            height: 160px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>图书管理</h1>
+        <div class="inputitem">
+            <label for="id">编号</label>
+            <input type="text" id="id" v-model="id" :disabled="flag">
+            <label for="name">名称</label>
+            <input type="text" id="name" v-model="name">
+            <button @click.prevent="handlebook" :disabled="subbook">提交</button>
+        </div>
+        <div class="totalitem">
+            <span>图书总数:</span>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in books" :key="item.id">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>2525</td>
+                        <td>
+                            <a href="" @click.prevent="edit(item.id)">修改</a>
+                            <span>|</span>
+                            <a href="" @click.prevent="deletebook(item.id)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                id:'',
+                name:'',
+                books:[],
+                flag:false,
+                subbook:false
+            },
+            methods:{
+                edit(id){
+                    this.flag=true
+                    var book=this.books.filter(item=>{
+                        return item.id==id
+                    })
+                    this.name=book[0].name
+                    this.id=book[0].id
+                    console.log(book)
+                },
+                deletebook(id){
+                    var index=this.books.findIndex(item=>{
+                        return item.id==id
+                    });
+                    this.books.splice(index,1)
+                },
+                handlebook(){
+                    if(this.flag){
+                        this.books.some(item=>{
+                            if(item.id==this.id){
+                                item.name=this.name
+                                return true
+                            }
+                        })
+                        this.flag=false
+                    }
+                    else{
+                        var book={}
+                        book.id=this.id
+                        book.name=this.name
+                        this.books.push(book)
+                        this.id=''
+                        this.name=''
+                    }
+                    
+                }
+            },
+            computed:{
+
+            },
+            watch:{
+                name(val){
+                    var flag=this.books.some(item=>{
+                        return item.name==val
+                    });
+                    if(flag){
+                        this.subbook=true
+                    }
+                    else{
+                        this.subbook=false
+                    }
+                }
+            },
+            mounted(){
+                var data=[{
+                    id:1,
+                    name:'三国演义',
+                    date:''
+                },{
+                    id:2,
+                    name:'水浒传',
+                    date:''
+                },{
+                    id:3,
+                    name:'红楼梦',
+                    date:''
+                },{
+                    id:4,
+                    name:'西游记',
+                    date:''
+                }];
+                this.books=data
+            }
+        })
+    </script>
+</body>
+</html>

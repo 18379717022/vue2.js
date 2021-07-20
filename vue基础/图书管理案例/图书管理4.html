@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>静态页面</title>
+    <style>
+        .grid{
+            margin: auto;
+            width: 500px;
+            text-align: center;
+        }
+
+        .grid table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .grid th,td{
+            padding: 7px;
+            border:1px dashed orange;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .grid th{
+            background-color: orange;
+        }
+
+        .grid .book{
+            padding-bottom: 10px;
+            padding-top: 5px;
+            background-color:gray;
+        }
+
+        .total{
+            height: 30px;
+            line-height: 30px;
+            background-color: orange;
+            border-top: 1px solid orange;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="grid">
+            <div>
+                <h1>图书管理</h1>
+                <div class="book">                    
+                        <label for="id">
+                            编号:
+                        </label>
+                        <input type="text" id="id" v-model="id" :disabled="flag" v-focus>
+
+                        <label for="name">
+                            名称:
+                        </label>
+                        <input type="text" id="name" v-model="name">
+                        <button @click="handle" :disabled="submit">提交</button>
+                    
+                </div>
+            </div>
+            <div class="total">
+                <span>图书总数:</span>
+                <span v-text="total"></span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in books" :key='item.id'>
+                        <td v-text="item.id"></td>
+                        <td v-text="item.name"></td>
+                        <td>{{date}}</td>
+                        <td>
+                            <a href="" @click.prevent="toEdit(item.id)">修改</a>
+                            <span></span>
+                            <a href="" @click.prevent="deletebook(item.id)">删除</a>
+                        </td>
+                    </tr>                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        //import formatDate from "./utils.js"
+        Vue.directive('focus',{
+            inserted(el){
+                //el表示指令所绑定的元素
+                el.focus();
+            }
+        });
+        new Vue({
+            el:'#app',
+            data:{
+                submit:false,
+                flag:false,
+                id:'',
+                name:'',
+                date:'2525',
+                books:[]
+            },
+            /*filters:{
+                showDate(value){
+                    //1.将时间戳转成Date对象
+                    const date=new Date(value*1000)
+                    //2.将date进行格式化
+                    return formatDate(date,'yyyy-MM-dd')
+                }
+            },*/
+            methods: {
+                handle(){
+                    if(this.flag){
+                        //编辑操作,就是根据当前的ID去更新数组中对应的数据
+                        this.books.some((item)=>{
+                            if(item.id==this.id){
+                                item.name=this.name;
+                                //完成更新操作之后，需要终止操作
+                                return true
+                            }
+                        })
+                        this.flag=false
+                    }else{
+                      //添加图书
+                    var book={};
+                    book.id=this.id;
+                    book.name=this.name;
+                    book.date='';
+                    this.books.push(book)
+                    //清空表单
+                    this.id='';
+                    this.name=''  
+                    }
+                    this.id='',
+                    this.name=''
+                },
+                toEdit(id){
+                    this.flag=true
+                    //根据ID查询出要编辑的数据
+                    var book=this.books.filter(function(item){
+                        return item.id==id;
+                    });
+                    console.log(book)
+                    //把获取到的信息填充到表单
+                    this.id=book[0].id;
+                    this.name=book[0].name
+                },
+                deletebook(id){
+                    //根据id从数组中查找元素的索引
+                    var index=this.books.findIndex(item=>{
+                        return item.id==id
+                    });
+                    //根据索引删除数组元素
+                    this.books.splice(index,1)
+                }
+            },
+            computed: {
+                total(){
+                    return this.books.length
+                }
+            },
+            watch: {
+                name(val){
+                    //验证图书名称是否已经存在
+                    //some判断数组中有没有满足条件的数据，只要有一个那就返回true,一个都不满足就返回false
+                    var flag=this.books.some(function(item){
+                        return item.name==val
+                    });
+                    if(flag){
+                        this.submit=true;
+                    }else{
+                        this.submit=false
+                    }
+                }
+            },
+            mounted() {
+                var data=[{
+                    id:1,
+                    name:'三国演义',
+                    date:''
+                },{
+                    id:2,
+                    name:'水浒传',
+                    date:''
+                },{
+                    id:3,
+                    name:'红楼梦',
+                    date:''
+                },{
+                    id:4,
+                    name:'西游记',
+                    date:''
+                }];
+                this.books=data;
+            },
+        })
+    </script>
+</body>
+</html>

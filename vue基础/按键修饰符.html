@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按键修饰符</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            用户名：
+            <input type="text" v-model="username" @keyup.delete="handle"/>
+        </div>
+        <div>
+            密码:
+            <input type="text" v-model="password" @keyup.enter="submit"/>
+        </div>
+        <button @click="submit">提交</button>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                username:'',
+                password:''
+            },
+            methods: {
+                submit(){
+                    console.log(this.username,this.password)
+                },
+                handle(){
+                    this.username=''
+                }
+            },
+        })
+    </script>
+</body>
+</html>

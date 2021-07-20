@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <input type="text" v-model="frame">
+            <button @click="add">添加</button>
+            <button @click="dele">删除</button>
+            <button @click="change">替换</button>
+        </div>
+        <ul v-cloak>
+            <li v-for="(item,index) in list" :key="index">{{item}}</li>
+        </ul>
+    </div>
+
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                frame:'',
+                list:['apple','orange','banana']
+            },
+            methods: {
+                add(){
+                    this.list.push(this.frame);
+                },
+                dele(){
+                    this.list.pop();//pop方法删除数组的最后一项
+                },
+                change(){
+                    this.list=this.list.slice(1,2);//从1开始截取，截取到第2个
+                }
+            },
+        })
+    </script>
+</body>
+</html>

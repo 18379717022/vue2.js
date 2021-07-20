@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./购物车.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <my-cart/>
+        </div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var CartTitle={
+            props:['uname'],
+            template:
+            `
+            <div class="title">{{uname}}的商品</div>
+            `
+        }
+        var CartList={
+            props:['list'],
+            template:
+            `
+            <div>
+                <div v-for="item in list" :key="item.id" class="item">
+                    <img :src="item.img"/>
+                    <div class="name"><span>{{item.name}}</span></div>
+                    <div class="change">
+                        <a href="" @click.prevent="sub(item.id)">-</a>
+                        <input type="text" class="num" :value='item.num' @blur='changeNum(item.id,$event)'/>
+                        <a href="" @click.prevent="add(item.id)">+</a>
+                    </div>
+                    <div class="del" @click="del(item.id)">*</div>
+                </div>
+            </div>
+            `,
+            methods:{
+                del(id){
+                    this.$emit('cartdelete',id)
+                },
+                changeNum(id,eveal){
+                    this.$emit('change-num',
+                    {
+                        id:id,
+                        num:eveal.target.value,
+                        type:'change'
+                    })
+                },
+                sub(id){
+                    this.$emit('change-num',
+                    {
+                        id:id,
+                        type:'subtype'
+                    })
+                },
+                add(id){
+                    this.$emit('change-num',
+                    {
+                        id:id,
+                        type:'addtype'
+                    })
+                }
+            }
+        }
+        var CartTotal={
+            props:['list'],
+            template:
+            `
+            <div class="total">
+                <span>总价:{{total}}</span>
+                <button>结算</button>
+            </div>
+            `,
+            computed:{
+                total(){
+                    var t=0
+                    this.list.forEach(item=>{
+                        t+=item.num*item.price
+                    });
+                    return t
+                }
+            }
+        }
+        Vue.component('my-cart',{
+            template:`
+            <div class="cart">
+                <cart-title :uname='uname'/>
+                <cart-list :list='list' @cartdelete="deletecart($event)" @change-num="changenum($event)"/>
+                <cart-total :list='list'/>
+            </div>
+            `,
+            methods:{
+                deletecart(id){
+                    var index=this.list.findIndex(item=>{
+                        return item.id=id
+                    })
+                    this.list.splice(index,1)
+                },
+                changenum(val){
+                    if(val.type=='change'){
+                        this.list.some(item=>{
+                            if(item.id==val.id){
+                                item.num=val.num
+                                return true
+                            }
+                            
+                        })
+                    }
+                    else if(val.type=='subtype'){
+                        this.list.some(item=>{
+                            if(item.id==val.id){
+                                item.num-=1
+                                if(item.num<0){
+                                    item.num=0
+                                }
+                                return true
+                            }
+                        })
+                    }
+                    else{
+                        this.list.some(item=>{
+                            if(item.id==val.id){
+                                item.num+=1
+                                return true
+                            }
+                        })
+                    }
+                }
+            },
+            components:{
+                CartTitle,
+                CartList,
+                CartTotal
+            },
+            data(){
+                return{
+                    uname:'张三',
+                    list:[
+                        {
+                            id:1,
+                            name:'TCL彩电',
+                            price:1000,
+                            num:1,
+                            img:'../img/g1.png'
+                        },{
+                            id:2,
+                            name:'机顶盒',
+                            price:1000,
+                            num:1,
+                            img:'../img/g2.png'
+                        },{
+                            id:3,
+                            name:'海尔冰箱',
+                            price:1000,
+                            num:1,
+                            img:'../img/g3.png'
+                        },{
+                            id:4,
+                            name:'小米手机',
+                            price:1000,
+                            num:1,
+                            img:'../img/g4.png'
+                        },{
+                            id:5,
+                            name:'智能手表',
+                            price:3000,
+                            num:1,
+                            img:'../img/g5.png'
+                        }
+                    ]
+                }
+            }
+        })
+        new Vue({
+            el:'#app',
+            data:{
+
+            }
+        })
+    </script>
+</body>
+</html>

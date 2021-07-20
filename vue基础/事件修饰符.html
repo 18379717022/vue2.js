@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+            <div v-cloak>{{num}}</div>
+            <div @click="handle1">
+                <button @click="handle2">+</button>
+            </div>  
+            <div>
+                <a href="http://www.baidu.com" @click.prevent="pap">百度</a>
+            </div>  
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                num:0
+            },
+            methods: {
+                handle1(){
+                    this.num++
+                },
+                handle2(){
+
+                },
+                pap(){
+
+                }
+            },
+        })
+    </script>
+</body>
+</html>

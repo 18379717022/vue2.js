@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>父传子</title>
+</head>
+<body>
+    <div id="app">
+        <div :style='{fontSize:fontSize+"px"}'>{{pmsg}}</div>
+        <div><menu-item :title="pmsg" @enlarge-text="handle($event)"></menu-item></div>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        Vue.component('menu-item',{
+            props:['title'],
+            data(){
+                return{
+                    msg:'子组件本身的数据'
+                }
+            },
+            template:
+            `
+            <div>
+                {{msg+"-----"+title}}
+                <button @click='$emit("enlarge-text",5)'>扩大父组件中字体大小</button>
+            </div>
+            `
+        })
+        new Vue({
+            el:'#app',
+            data:{
+                pmsg:'父组件的数据',
+                fontSize:10
+            },
+            methods: {
+                handle(val){
+                this.fontSize+=val
+            }
+            },
+        })
+    </script>
+</body>
+</html>

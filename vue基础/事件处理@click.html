@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件处理@click</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            {{num}}
+        </br>
+            <button @click="count">+</button>
+            <button @click="decount">-</button>
+        </div>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                num:0
+            },
+            methods: {
+                count(){
+                    this.num++
+                },
+                decount(){
+                    this.num--
+                }
+            },
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-if与v-show的区别</title>
+</head>
+<body>
+    <div id="app">
+       <span>请输入您的成绩:</span>
+       <input type="text" v-model="score"/></br>
+       <span>评价:</span>
+       <span v-if="score>=90">优秀</span>
+       <span v-else-if="score>=80">良好</span>
+       <span v-else-if="score>=60">及格</span>
+       <span v-else>不及格</span></br>
+
+       <span v-show="abc">v-show测试</span>
+       <button @click="check">点击</button>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                score:'',
+                abc:true
+            },
+            methods: {
+                check(){
+                    this.abc=!this.abc
+                }
+            },
+        })
+    </script>
+</body>
+</html>
+<!--v-if控制元素是否渲染到页面,v-show控制元素是否显示（通过设置display:none）来决定显示与否-->
+<!--如果要频繁切换元素的显示与隐藏，则使用v-show,如果不需要频繁渲染元素，则使用v-if-->
